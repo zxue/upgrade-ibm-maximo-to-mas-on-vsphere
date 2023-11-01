@@ -1,0 +1,1 @@
+# deply-openshift-mas-in-vmware
