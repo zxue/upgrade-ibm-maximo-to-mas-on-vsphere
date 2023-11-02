@@ -214,5 +214,5 @@ Note: The following people from IBM contributed to the project.
 - Ryan Menossi, Solution Architect, IBM
 - Benjamin Xue,	Solution Architect, IBM
 
-Special thanks to Brian Zhu, Senior Software Engineer, Maximo, IBM, Jenny Wang, Technical Architect, Maximo, IBM, and our Red Hat friend, Cedric Anderson, for their deep expertise on Red Hat OpenShift and IBM Maximo and technical guidance on how to troubleshoot issues we encountered.
+Special thanks to Brian Zhu, Senior Software Engineer, Maximo, IBM, Jenny Wang, Technical Architect, Maximo, IBM, and our Red Hat friend, Cedric Anderson, for their deep expertise on Red Hat OpenShift and IBM Maximo and guidance on how to troubleshoot several critical issues.
 
