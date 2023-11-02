@@ -207,7 +207,9 @@ A major exception has occurred. Check the system log to see if there are any com
 ...
 ```
 
-Note: The following people from IBM contributed to the project.
+## Project Team from IBM
+
+The following people from IBM contributed to the project.
 
 - Ahmed AlSadiq, Technology Engineer, IBM
 - Alex Cravalho, Technology Engineer, IBM
