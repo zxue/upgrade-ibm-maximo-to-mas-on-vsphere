@@ -205,7 +205,7 @@ You can verify the maximo properties from the terminal session of the maxinst po
 mxe.name=MXServer
 mxe.db.url=xxx
 mxe.db.driver=xxx
-mxe.db.user=db2inst1
+mxe.db.user=xxx
 mxe.db.password=xxx
 mxe.db.schemaowner=maximo
 mxe.security.crypto.key=HkckmIQmNQWbjNKVJZtJJHjR
@@ -224,6 +224,19 @@ The app has experienced a problem that is preventing it from loading/rendering.
 A major exception has occurred. Check the system log to see if there are any companion errors logged. Report this error to your system administrator.
 
 ...
+```
+
+### Deactivate MAS Manage
+
+You never deactivate your production Manage system once activated. However, for dev and test environment, you may need to deactivate MAS Manage.
+
+Deactivate means uninstall the Manage system, including configuration settings, in the MAS workspace. Before you deactivate a system, make a copy of the encryption keys. Once deactivated, the encryption keys will be removed. If you cannot recover the encryption keys used for your database, the database cannot be used by Maximo system anymore.
+
+While MAS Manage activation is still going, the Deactivate command from the MAS admin portal may not be responsive. To force deactivation manually, find the instance in the ManageWorkspace custom resource. Open the yaml file and remove the following lines.
+
+```
+  finalizers:
+    - manageworkspace.apps.mas.ibm.com/finalizer
 ```
 
 ## Project Team from IBM
