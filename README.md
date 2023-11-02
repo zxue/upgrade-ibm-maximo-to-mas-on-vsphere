@@ -160,6 +160,8 @@ storage:
     claim: 
 ```
 
+You can verify that the claim value, which is updated to "image-registry-storage" automatically, from the "cluster" instance of the "config" custom resource in the imageregistry.operator.openshift.io group. 
+
 - Delete the pvc named "image-registry-storage" and re-create it manually from the OpenShift admin portal, using the "thin" storage class, with 100GB storage size.
 
 The pvc should be bounded immediately, and the image push failure should be resolved.
@@ -194,6 +196,23 @@ To provide database encryption keys, select MAS manage. Select "Update configura
 - Specify schema, table space and index space to match the values in the existing Maximo database.
 - Specify two properties, MXE_SECURITY_OLD_CRYPTO_KEY and MXE_SECURITY_OLD_CRYPTOX_KEY. Their values are custom keys used in Maximo 7.6.1.x, or values from two properties stored in MXE_SECURITY_CRYPTOX_KEY and MXE_SECURITY_CRYPTO_KEY from a previous MAS upgrade. The reason is that the some Maximo properties such as the password fields have been re-encrypted by the encryptions. 
 - Specify MXE_SECURITY_CRYPTOX_KEY and MXE_SECURITY_CRYPTO_KEY and their values. They can be set to the same values as the old encryption keys accordingly, or different values than the old encryptions. For the latter option, the table properties are decrypted with the old keys and re-encrypted with the new keys.
+
+You can verify the maximo properties from the terminal session of the maxinst pod. The maximo.propeties file is stored in the  `/opt/IBM/SMP/maximo/applications/maximo/properties` folder.
+
+```
+# cat maximo.properties
+
+mxe.name=MXServer
+mxe.db.url=xxx
+mxe.db.driver=xxx
+mxe.db.user=db2inst1
+mxe.db.password=xxx
+mxe.db.schemaowner=maximo
+mxe.security.crypto.key=HkckmIQmNQWbjNKVJZtJJHjR
+mxe.security.cryptox.key=PSdPefRQuwNSTfSDFiwJMmkU
+mxe.security.old.crypto.key=
+mxe.security.old.cryptox.key=
+```
 
 ### MAS admin log in failure
 
