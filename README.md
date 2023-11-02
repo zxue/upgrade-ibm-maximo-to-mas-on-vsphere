@@ -1,4 +1,4 @@
-# Upgrade IBM Maximo to MAS on VMware vSphere
+# Upgrade IBM Maximo to MAS on VMware vSphere - Lessons Learned
 
 With the [September 2025 end of support for Maximo 7.6.1](https://www.ibm.com/support/pages/end-support-announcement-eos-maximo-761) timeline approaching, IBM Maximo customers are interested to learn what is required to upgrade their 7.6.1.x environments, many deployed and hosted on-premises, to the new releases, Maximo Application Suite (MAS). Some customers take one step further by setting up a standalone environment to evaluate the new infrastructure and of course the MAS out of the box functionality. 
 
@@ -10,7 +10,7 @@ This document covers MAS upgrade for a customer running Maximo 7.6.1.x on premis
 
 Note that our test environment is based on Red Hat OpenShift version 4.12, MAS core 8.11 and MAS Manage 8.7, and the Oracle database, version 19c, that is hosted separated from the OpenShift cluster. All master and worker nodes, plus the Bastion machine, are VMs hosted in vSphere.
 
-## Install OpenShift with Customizations
+## Install OpenShift with Customization
 
 Red Hat has provided detailed documents on how to [install an OpenShift cluster on vSphere with customizations](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/installing-vsphere-installer-provisioned-customizations.html). 
 
@@ -30,7 +30,7 @@ It's worth noting that you can run the command below to delete an existing OpenS
 
 By default, 3 master nodes and 3 worker nodes are created. However, you can change the number of worker nodes, and specify cpu and memory for each worker node in the install-config.yaml file.
 
-### Network customizations
+### Network customization
 
 For networking, you can change the machineNetwork cidr value so that all master nodes and worker nodes obtain IP addresses from DHCP and are accessible from your local network.
 
@@ -134,9 +134,9 @@ Registry server Password: <<non-empty>>
 error: build error: Failed to push image: trying to reuse blob sha256:5d39cd8b7ac1444c015a4531ff371860726ed47224dd5de877429ca388214019 at destination: pinging container registry image-registry.openshift-image-registry.svc:5000: Get "https://image-registry.openshift-image-registry.svc:5000/v2/": dial tcp 172.30.154.142:5000: connect: connection refused
 ```
 
-Upon further investigation, we find that only one deployment, "cluster-image-registry-operator", is available in the openshift-image-registry namespace in OpenShift. The "image-registry" deployment is missing. The root cause of the issue is that MAS requires a "read write many" (RWX) storage (or PVC volume) which the storage class "thin" does not support. The workaround is to change the storage requirement to "read write once" (RWO). This should not be an issue for MAS since only RWX is only required for documents, which we do not use in the project. 
+Upon further investigation, we find that only one deployment, "cluster-image-registry-operator", is available in the openshift-image-registry namespace in OpenShift. The "image-registry" deployment is missing. The root cause of the issue is that MAS requires a "read write many" (RWX) storage (or PVC volume) which the storage class "thin" does not support. As documented by Red Hat, "On platforms that do not provide shareable object storage, the OpenShift Image Registry Operator bootstraps itself as Removed. This allows openshift-installer to complete installations on these platform types."
 
-To address the issue, we take the following steps:
+The workaround is to change the storage requirement to "read write once" (RWO). This should not be an issue for MAS since only RWX is only required for documents, which we do not use in the project. To address the issue, we take the following steps:
 
 - fix the image registry storage issue by issuing the patch command: 
 ```
@@ -166,7 +166,7 @@ The pvc should be bounded immediately, and the image push failure should be reso
 
 ### Network slowness issue
 
-For unknown reasons MAS Manage activation takes a long time and does not complete as expected. On the MAS admin portal, we see errors with DeploymentCR or "Deployment Ready". On the OpenShift admin portal, we see errors with the  masdev-manage-maxinst pod in the MAS Manage instance namespace. 
+For reasons initially unknown to us, MAS Manage activation takes a long time and does not complete as expected. On the MAS admin portal, we see errors with DeploymentCR or "Deployment Ready". On the OpenShift admin portal, we see errors with the  masdev-manage-maxinst pod in the MAS Manage instance namespace. 
  
 We notice "Oslc servlet.... Server did not start yet. Will wait 30 sec." in the log. Upon further investigation, we discover that the query that fetches records from the maxattribute table, `select * from maximo.maxattribute`, takes longer time than expected. 
 
