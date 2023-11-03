@@ -115,6 +115,85 @@ export UDS_STORAGE_CLASS= thin-csi
 export PROMETHEUS_ALERTMGR_STORAGE_CLASS=thin-csi
 ```
 
+It's recommended that you go with automatic approval of channel subscription during MAS Manage activation, unless you need to stay with a specific version. This ensures that you get a latest version of MAS Manage. You can change the setting later from the MAS admin portal.
+
+After successful installation of MAS core and MAS Manage activation, you can see a number of pods created in OpenShift.
+
+Pods in MAS core namespace
+
+```
+NAME                                                     READY   STATUS      RESTARTS   AGE
+ibm-mas-operator-5fc7f5df55-hptst                        1/1     Running     0          24h
+ibm-truststore-mgr-controller-manager-5c67c5f8fb-gghp2   1/1     Running     0          17d
+poc1-accapppoints-28317180-2t67c                         0/1     Completed   0          24m
+poc1-admin-dashboard-749f4cbf48-v6ft8                    1/1     Running     0          24h
+poc1-adoptionusage-reporter-28316281-rsqzv               0/1     Completed   0          15h
+poc1-adoptionusageapi-864569c986-4jmtb                   1/1     Running     0          24h
+poc1-catalogapi-6fddd76485-sxtzh                         1/1     Running     0          24h
+poc1-catalogmgr-85ff5b95dd-cvj86                         1/1     Running     0          24h
+poc1-coreapi-74b448f948-hv2mw                            1/1     Running     0          24h
+poc1-coreapi-74b448f948-lhwfw                            1/1     Running     0          24h
+poc1-coreapi-74b448f948-mqx7n                            1/1     Running     0          24h
+poc1-coreidp-86895cffcf-bk8kl                            1/1     Running     0          24h
+poc1-coreidp-login-7ccf687bc9-rmgtz                      1/1     Running     0          24h
+poc1-coreidp-truststore-worker-jhkh6                     0/1     Completed   0          17d
+poc1-entitymgr-addons-6d5bcdcf58-g9kgm                   1/1     Running     0          24h
+poc1-entitymgr-bascfg-59c44c6698-ckr8w                   1/1     Running     0          24h
+poc1-entitymgr-coreidp-6fb4864d97-6btvc                  1/1     Running     0          24h
+poc1-entitymgr-idpcfg-5d9cbcf664-p5cb5                   1/1     Running     0          24h
+poc1-entitymgr-jdbccfg-5cdd66496f-twb9q                  1/1     Running     0          24h
+poc1-entitymgr-kafkacfg-5f79567cc6-8qvsn                 1/1     Running     0          24h
+poc1-entitymgr-mongocfg-6c9f9949ff-8zwwn                 1/1     Running     0          24h
+poc1-entitymgr-objectstorage-79dd66bccf-4wvjm            1/1     Running     0          24h
+poc1-entitymgr-pushnotificationcfg-6bbd444f5d-n64dw      1/1     Running     0          24h
+poc1-entitymgr-scimcfg-7bdbd4cf8d-l9x2s                  1/1     Running     0          24h
+poc1-entitymgr-slscfg-fdf49ff5-8mcxv                     1/1     Running     0          24h
+poc1-entitymgr-smtpcfg-7c6fdc46d9-6k8r6                  1/1     Running     0          24h
+poc1-entitymgr-suite-fd5db7c48-jbpkq                     1/1     Running     0          24h
+poc1-entitymgr-watsonstudiocfg-6d7d77b44-28mxs           1/1     Running     0          24h
+poc1-entitymgr-ws-5fb96655d4-84nxd                       1/1     Running     0          24h
+poc1-groupsync-coordinator-84894d45df-7mdxn              1/1     Running     0          24h
+poc1-homepage-868487dd9b-pb2zz                           1/1     Running     0          24h
+poc1-internalapi-79c6654795-2b8jc                        1/1     Running     0          24h
+poc1-licensing-mediator-55cf7cf589-n6g99                 1/1     Running     0          24h
+poc1-ltpakeygenerator-rfx5t                              0/1     Completed   0          17d
+poc1-milestonesapi-7f94fdd7d9-s67wr                      1/1     Running     0          24h
+poc1-mobileapi-56d559fbfc-c5txn                          1/1     Running     0          24h
+poc1-monagent-mas-69df65b74b-7jhjh                       1/1     Running     0          24h
+poc1-navigator-57bb547cbc-tnb7j                          1/1     Running     0          24h
+poc1-oidcclientreg-cxlvk                                 0/1     Completed   0          17d
+poc1-truststore-worker-j6r55                             0/1     Completed   0          17d
+poc1-usage-daily-28317200-q5br8                          0/1     Completed   0          4m15s
+poc1-usage-historical-28317150-mhn9q                     0/1     Completed   0          54m
+poc1-usage-hourly-28317190-rvl2w                         0/1     Completed   0          14m
+poc1-usersync-coordinator-76f8f9cd58-ww8gs               1/1     Running     0          24h
+poc1-workspace-coordinator-b9fbd48c4-rxbtq               1/1     Running     0          24h
+```
+
+Pods in MAS Manage namespace
+
+```
+NAME                                                     READY   STATUS      RESTARTS   AGE
+admin-build-config-1-build                               0/1     Completed   0          17d
+admin-build-config-2-build                               0/1     Completed   0          24h
+all-build-config-1-build                                 0/1     Completed   0          17d
+all-build-config-2-build                                 0/1     Completed   0          23h
+ibm-mas-imagestitching-operator-6467757856-xgzpf         1/1     Running     0          17d
+ibm-mas-manage-operator-55b48cd6d5-26lzs                 2/2     Running     0          24h
+ibm-truststore-mgr-controller-manager-779cfbf557-8q47l   1/1     Running     0          17d
+poc1-entitymgr-appstatus-7ffcfc46c7-k9q8k                1/1     Running     0          24h
+poc1-entitymgr-bdi-5bcffb647d-xnh4n                      1/1     Running     0          24h
+poc1-entitymgr-primary-entity-5fd75f4759-9f6fp           1/1     Running     0          24h
+poc1-entitymgr-ws-599475ff89-bt9fs                       1/1     Running     0          24h
+poc1-groupsyncagent-76bcd87847-kmzfx                     1/1     Running     0          17d
+poc1-healthext-entitymgr-ws-5868c5ddf-zsm7k              1/1     Running     0          24h
+poc1-masdev-all-8f99964c5-nnjnt                          2/2     Running     0          23h
+poc1-masdev-manage-maxinst-77d77f548b-dlksk              1/1     Running     0          23h
+poc1-masdev-truststore-worker-dgqdm                      0/1     Completed   0          17d
+poc1-monitoragent-5d7d9989d9-8m6wc                       1/1     Running     0          24h
+poc1-usersyncagent-689458968-qm47s                       1/1     Running     0          17d
+```
+
 ## Troubleshoot OpenShift and Maximo Issues
 
 We encounter and resolve a few technical issues in the project, one related to image registry, one related to network performance and one related to MAS Manage activation with industry solutions and add-ons.
@@ -184,7 +263,7 @@ oc patch network.operator cluster -p '{"spec": {"defaultNetwork": {"ovnKubernete
 
 The patch command ensures that the packets leaving the pods use the same routing tables as the host VM that they are on by setting this value. With OpenShiftSDN networktype, this works automatically. For more details, check [Cluster Network Operator in OpenShift Container Platform](https://docs.openshift.com/container-platform/4.12/networking/cluster-network-operator.html)
 
-### Database encryption issue
+### Database encryption issue and re-activation
 
 Users are not expected to have any database encryption issues during MAS upgrade. However, if some properties in Maximo 7.6.1.x and prior versions are encrypted using custom encryption keys instead of system generated keys, or if the database upgrade is completed but MAS Manage activation does not complete, the the encryption keys and encryption algorithms must be specified. 
 
@@ -214,6 +293,8 @@ mxe.security.old.crypto.key=
 mxe.security.old.cryptox.key=
 ```
 
+After updating encryption keys from the MAS admin portal, you can re-activate MAS Manage. Before re-activation, delete the secret named `<mas workspace e.g. masdev>-manage-encryptionsecret-operator` in the MAS Manage namespace. This ensures that the changes are reloaded during activation.
+
 ### MAS admin log in failure
 
 If some industry solutions and add-ons are enabled in Maximo, they must be activated or enabled when MAS Manage is activated, or afterwards. Otherwise, MAS admin login fails with the following message.
@@ -238,6 +319,20 @@ While MAS Manage activation is still going, the Deactivate command from the MAS 
   finalizers:
     - manageworkspace.apps.mas.ibm.com/finalizer
 ```
+
+### Uninstall MAS core and delete MAS namespace in OpenShift
+
+You can run an Ansibile playbook to remove MAS. It is suggested that you delete the MAS Manage project or namespace and load the environment variable specifying the MAS instance, before running the playbook. Uninstalling MAS core takes a few minutes.
+
+```
+#docker run -ti --rm --pull always -v ~/masconfig:/mascli/masconfig quay.io/ibmmas/cli
+#ansible-playbook ibm.mas_devops.oneclick_core
+ansible-playbook ibm.mas_devops.uninstall_core
+```
+
+Note that you may find that deleting a MAS Manage project changes its status to "Terminating" indefinitely, and `oc delete project dev --force --grace-period=0` does not completely delete a project. Take the following steps.
+- Make sure that all MAS Manage CRs including ManageApp, ManageBuild, ManageDeployment, ManageOfflineUpdateRequest, ManageServerBundle, ManageStatusCchecker,ManageWorkspace are deleted.
+- oc login and run the command, `kill-ns mas-proc-manage` 
 
 ## Project Team from IBM
 
