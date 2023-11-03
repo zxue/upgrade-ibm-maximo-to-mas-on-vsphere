@@ -304,12 +304,12 @@ To run speed test for the database, you can do the following.
 - On the OpenShift cluster, run `dd if=/dev/zero bs=1M count=10240 | nc -n <ip of db server> 12345`
 
 
-Optionally, run a database testing tool, which will be made available soon. Open the terminal session of the MAS Manage `<instance>-<workspace>-all` pod, and run the commands below.
+Optionally, run a database testing tool in java, which will be made available soon. Open the terminal session of the MAS Manage `<instance>-<workspace>-all` pod, and run the commands below.
 
 ```
 cd /tmp
 
-curl -L -v -o DBTest.class https://ibm.box.com/shared/static/xxx.class (We will update the url when the testing tool is publically available)
+curl -L -v -o DBTest.class https://ibm.box.com/shared/static/xxx.class
 
 find / |grep oraclethin
 ```
