@@ -332,6 +332,7 @@ ansible-playbook ibm.mas_devops.uninstall_core
 
 Note that you may find that deleting a MAS Manage project changes its status to "Terminating" indefinitely, and `oc delete project dev --force --grace-period=0` does not completely delete a project. Take the following steps.
 - Make sure that all MAS Manage CRs including ManageApp, ManageBuild, ManageDeployment, ManageOfflineUpdateRequest, ManageServerBundle, ManageStatusCchecker,ManageWorkspace are deleted.
+- download and save the [script](https://github.com/ctron/kill-kube-ns/blob/master/kill-kube-ns) to your local folder.
 - oc login and run the command, `kill-ns mas-<instance name>-manage` 
 
 You can find additional info at Red Hat's [knowledge base](https://access.redhat.com/solutions/4165791).
