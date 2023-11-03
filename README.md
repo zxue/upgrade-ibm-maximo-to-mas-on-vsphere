@@ -213,7 +213,7 @@ Registry server Password: <<non-empty>>
 error: build error: Failed to push image: trying to reuse blob sha256:5d39cd8b7ac1444c015a4531ff371860726ed47224dd5de877429ca388214019 at destination: pinging container registry image-registry.openshift-image-registry.svc:5000: Get "https://image-registry.openshift-image-registry.svc:5000/v2/": dial tcp 172.30.154.142:5000: connect: connection refused
 ```
 
-Upon further investigation, we find that only one deployment, "image-registry", is available in the openshift-image-registry namespace in OpenShift. The "cluster-image-registry-operator" deployment is missing. The root cause of the issue is that MAS requires a "read write many" (RWX) storage (or PVC volume) which the storage class "thin" does not support. As noted in the OpenShift documentation, "The Image Registry Operator is not initially available for platforms that do not provide default storage. After installation, you must configure your registry to use storage so that the Registry Operator is made available."
+Upon further investigation, we find that only one deployment, "cluster-image-registry-operator", is available in the openshift-image-registry namespace in OpenShift. The "image-registry" deployment is missing. The root cause of the issue is that MAS requires a "read write many" (RWX) storage (or PVC volume) which the storage class "thin" does not support. As noted in the OpenShift documentation, "The Image Registry Operator is not initially available for platforms that do not provide default storage. After installation, you must configure your registry to use storage so that the Registry Operator is made available."
 
 The workaround is to change the storage requirement to "read write once" (RWO). This should not be an issue for MAS since only RWX is only required for documents, which we do not use in the project. To address the issue, we take the following steps:
 
@@ -245,7 +245,7 @@ You can verify that the claim value, which is updated to "image-registry-storage
 
 The pvc should be bounded immediately, and the image push failure should be resolved.
 
-### Network slowness issue
+### OpenShift Network slowness issue
 
 For reasons initially unknown to us, MAS Manage activation takes a long time and does not complete as expected. On the MAS admin portal, we see errors with DeploymentCR or "Deployment Ready". On the OpenShift admin portal, we see errors with the  masdev-manage-maxinst pod in the MAS Manage instance namespace. 
  
@@ -262,6 +262,23 @@ oc patch network.operator cluster -p '{"spec": {"defaultNetwork": {"ovnKubernete
 ```
 
 The patch command ensures that the packets leaving the pods use the same routing tables as the host VM that they are on by setting this value. With OpenShiftSDN networktype, this works automatically. For more details, check [Cluster Network Operator in OpenShift Container Platform](https://docs.openshift.com/container-platform/4.12/networking/cluster-network-operator.html)
+
+### Check logs in MAS Manage pods
+
+During MAS Manage activation, you can check logs in the `<instance>-<workspace>-manage-maxinst` pod and `<instance>-<workspace>-all` pod.
+
+In addition, you can run the server dump command to get a log file. Coppy the log file to your local host and use online tools like [Java Thread Dump Analyzer](https://fastthread.io/) to analyze threads, total threads, blocked threads, waiting threads, runnable threads.
+
+```
+server javadump defaultServer
+
+#Dumping server defaultServer.
+#Server defaultServer dump complete in /opt/ibm/wlp/output/defaultServer/javacore.20231103.202931.22.0002.txt.
+```
+
+### OpenShift monitoring dashboards
+
+You can check cpu and memory usage and network bandwidth information from the Dashboards under Observe in OpenShift. For more details, check [Reviewing monitoring dashboards](https://docs.openshift.com/container-platform/4.12/monitoring/reviewing-monitoring-dashboards.html)
 
 ### Database encryption issue and re-activation
 
