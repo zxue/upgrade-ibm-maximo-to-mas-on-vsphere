@@ -314,6 +314,26 @@ curl -L -v -o DBTest.class https://ibm.box.com/shared/static/xxx.class
 find / |grep oraclethin
 ```
 
+### Check and modify liveness values for MAS Manage deployment
+
+This advanced troubleshooting practice is for experienced OpenShift and MAS administrators. 
+
+Open the ibm-mas-manage-operator deployment under Deployments in OpenShift. Scale down the pod to 0. Increase some values, for example, timeoutSeconds from 1 to 10. Scale up the pod to 1.
+
+```
+          name: manager
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 6789
+              scheme: HTTP
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 3
+```
+
 ### OpenShift monitoring dashboards
 
 You can check cpu and memory usage and network bandwidth information from the Dashboards under Observe in OpenShift. For more details, check [Reviewing monitoring dashboards](https://docs.openshift.com/container-platform/4.12/monitoring/reviewing-monitoring-dashboards.html)
@@ -391,6 +411,7 @@ Note that you may find that deleting a MAS Manage project changes its status to 
 - oc login and run the command, `kill-ns mas-<instance name>-manage` 
 
 You can find additional info at Red Hat's [knowledge base](https://access.redhat.com/solutions/4165791).
+
 
 ## Project Team from IBM
 
