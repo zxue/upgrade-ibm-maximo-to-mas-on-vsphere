@@ -263,17 +263,55 @@ oc patch network.operator cluster -p '{"spec": {"defaultNetwork": {"ovnKubernete
 
 The patch command ensures that the packets leaving the pods use the same routing tables as the host VM that they are on by setting this value. With OpenShiftSDN networktype, this works automatically. For more details, check [Cluster Network Operator in OpenShift Container Platform](https://docs.openshift.com/container-platform/4.12/networking/cluster-network-operator.html)
 
+To check OpenShift network settings, run the command, `oc describe network.config/cluster`
+
 ### Check logs in MAS Manage pods
 
 During MAS Manage activation, you can check logs in the `<instance>-<workspace>-manage-maxinst` pod and `<instance>-<workspace>-all` pod.
 
-In addition, you can run the server dump command to get a log file. Coppy the log file to your local host and use online tools like [Java Thread Dump Analyzer](https://fastthread.io/) to analyze threads, total threads, blocked threads, waiting threads, runnable threads.
+You can run the server dump command to get a log file on the `<instance>-<workspace>-all` pod. Coppy the log file to your local host and use online tools like [Java Thread Dump Analyzer](https://fastthread.io/) to analyze threads, total threads, blocked threads, waiting threads, runnable threads.
 
 ```
 server javadump defaultServer
 
 #Dumping server defaultServer.
 #Server defaultServer dump complete in /opt/ibm/wlp/output/defaultServer/javacore.20231103.202931.22.0002.txt.
+```
+
+To copy from the log file from the pod to your local host, run the command below.
+```
+oc cp <pod-name>:/opt/ibm/wlp/output/defaultServer/javacore.20231103.202931.22.0002.txt ./thread.log.txt
+```
+
+### Test network communications between the MAS Manage pod and database server
+
+You can run the `time` command on the `<instance>-<workspace>-manage-maxinst` pod.
+
+```
+find . -name querycount.sh
+cd internal
+time ./querycount.sh -qtable -tmaxvars
+
+#real    0m3.673s
+#user    0m5.681s
+#sys     0m0.634s
+```
+
+To run speed test for the database, you can do the following.
+
+- run the `ping` command from the OpenShift cluster: ping -s 65000 <ip of db>
+- On the db server, run this command `nc -l -n 12345 > /dev/null &`
+- On the OpenShift cluster, run `dd if=/dev/zero bs=1M count=10240 | nc -n <ip of db server> 12345`
+
+
+Optionally, run a database testing tool, which will be made available soon. Open the terminal session of the MAS Manage `<instance>-<workspace>-all` pod, and run the commands below.
+
+```
+cd /tmp
+
+curl -L -v -o DBTest.class https://ibm.box.com/shared/static/xxx.class (We will update the url when the testing tool is publically available)
+
+find / |grep oraclethin
 ```
 
 ### OpenShift monitoring dashboards
