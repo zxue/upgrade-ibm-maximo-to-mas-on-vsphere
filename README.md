@@ -370,6 +370,41 @@ mxe.security.old.cryptox.key=
 
 After updating encryption keys from the MAS admin portal, you can re-activate MAS Manage. Before re-activation, delete the secret named `<mas workspace e.g. masdev>-manage-encryptionsecret-operator` in the MAS Manage namespace. This ensures that the changes are reloaded during activation.
 
+
+### Database initialization issue
+
+If you are deploying MAS Manage with a blank database, for example, a DB2WH instance, make sure that the database is initialized. Otherwise, you may see errors shown below. For more details, check [Preparing your database for deployment](https://www.ibm.com/docs/en/mas-cd/maximo-manage/continuous-delivery?topic=SSLPL8_cd/com.ibm.mam.doc/manage_deploy/t_configure_databases.htm).
+
+```
+Starting database validation for maxinst or updatedb...
+MAXVAR return code = 1
+Calling maxinst ...
+Starting maxinst...
+Additional maxinst args: -y
+!
+!!! WARNING !!!
+!
+! Maxinst will drop and rebuild all the tables in your database. 
+!
+! If you are not sure you should be running Maxinst, hit Ctrl/C now!!!!
+!
+! Otherwise,
+Press ENTER to continue . . .
+Log file: Cleandb20231109210915.log
+Connecting to: jdbc:db2://c-db2w-shared-db2u-engn-svc.db2u.svc:50001/BLUDB:sslConnection=true;sslVersion=TLSv1.2;
+Cleandatabase complete: Successful
+Thu Nov 09 21:09:18 GMT 2023 --- Starting ----
+BMXAA6806I - Reading the properties file maximo.properties.
+BMXAA6814W - Maxinst Connection warning: com.ibm.db2.jcc.am.SqlWarning: DB2 SQL Warning: SQLCODE=0, SQLSTATE=00000, SQLERRMC=1;1208;DB2INST1;BLUDB;QDB2/LINUXX8664;1085;1085;0;1208;1;0;, DRIVER=4.32.28
+java.lang.Exception: Invalid tablespace for -s and/or -t parameters. - MAXDATA
+at psdi.configure.Maxinst.endSetupInstance(Maxinst.java:2598)
+at psdi.configure.CommonShell.endSetup(CommonShell.java:1853)
+at psdi.configure.CommonShell.setup(CommonShell.java:1353)
+at psdi.configure.Maxinst.main(Maxinst.java:2725)
+Invalid tablespace for -s and/or -t parameters. - MAXDATA Thu Nov 09 21:09:19 GMT 2023
+BMXAA6819I - Maxinst completed with errors. Thu Nov 09 21:09:19 GMT 2023
+```
+
 ### MAS admin log in failure
 
 If some industry solutions and add-ons are enabled in Maximo, they must be activated or enabled when MAS Manage is activated, or afterwards. Otherwise, MAS admin login fails with the following message.
