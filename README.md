@@ -406,12 +406,18 @@ ansible-playbook ibm.mas_devops.uninstall_core
 ```
 
 Note that you may find that deleting a MAS Manage project changes its status to "Terminating" indefinitely, and `oc delete project dev --force --grace-period=0` does not completely delete a project. Take the following steps.
-- Search on "manageapps". Delete all custom resource definitions listed, e.g. ManageApp, ManageBuild, ManageDeployment, ManageOfflineUpdateRequest, ManageServerBundle, ManageStatusCchecker,ManageWorkspace are deleted.
-- Find the instance of ManageApp, e.g. "poc1". Open the yaml file, and delete the lines. The project for MAS Manage`` should be removed now. 
+- Search on "mas". Delete all custom resource definitions listed, e.g. ManageWorkspace, ManageApp, ManageBuild, ManageDeployment, ManageOfflineUpdateRequest, ManageServerBundle, ManageStatusCchecker,ManageWorkspace are deleted.
+- Find the instance of ManageApp, e.g. "poc1". Open the yaml file, and delete the lines.  
 ```
   finalizers:
     - manageapp.apps.mas.ibm.com/finalizer
 ``` 
+- Find the instance of ManageDeployment, e.g. "poc1". Open the yaml file, and delete the lines. 
+```
+  finalizers:
+    - mas.ibm.com/finalizer
+```
+The project for MAS Manage`` should be removed now.
 
 Another option is to download the script.
 - download and save the [script](https://github.com/ctron/kill-kube-ns/blob/master/kill-kube-ns) to your local folder.
