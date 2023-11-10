@@ -441,7 +441,7 @@ ansible-playbook ibm.mas_devops.uninstall_core
 ```
 
 Note that you may find that deleting a MAS Manage project changes its status to "Terminating" indefinitely, and `oc delete project dev --force --grace-period=0` does not completely delete a project. Take the following steps.
-- Search on "mas". Delete all custom resource definitions listed, e.g. HealthextWorkspace, HealthWorkspace, ManageWorkspace, ManageApp, ManageBuild, ManageDeployment, ManageOfflineUpdateRequest, ManageServerBundle, ManageStatusCchecker,ManageWorkspace are deleted.
+- Search on "mas". Delete all custom resource definitions listed, e.g. Suite, HealthextWorkspace, HealthWorkspace, ManageWorkspace, ManageApp, ManageBuild, ManageDeployment, ManageOfflineUpdateRequest, ManageServerBundle, ManageStatusCchecker,ManageWorkspace are deleted.
 - Find the instance of ManageApp in the correct namespace, e.g. "poc1". Open the yaml file, and delete the lines.  
 ```
   finalizers:
