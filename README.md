@@ -241,7 +241,63 @@ storage:
 
 You can verify that the claim value, which is updated to "image-registry-storage" automatically, from the "cluster" instance of the "config" custom resource in the imageregistry.operator.openshift.io group. 
 
-- Delete the pvc named "image-registry-storage" and re-create it manually from the OpenShift admin portal, using the "thin" storage class, with 100GB storage size.
+- Delete the pvc named "image-registry-storage" and re-create it manually from the OpenShift admin portal, using the "thin" storage class, with 100GB storage size. Notice that the accessModes is changed from "ReadWriteMany" in the system generated PVC as shown below to "ReadWriteOnce" in the new PVC.
+
+```
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: image-registry-storage
+  namespace: openshift-image-registry
+  uid: 9b669e13-546c-4c37-9778-b33af6d0a82a
+  resourceVersion: '67741'
+  creationTimestamp: '2023-11-15T03:07:24Z'
+  annotations:
+    imageregistry.openshift.io: 'true'
+    volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/vsphere-volume
+    volume.kubernetes.io/storage-provisioner: kubernetes.io/vsphere-volume
+  finalizers:
+    - kubernetes.io/pvc-protection
+  managedFields:
+    - manager: cluster-image-registry-operator
+      operation: Update
+      apiVersion: v1
+      time: '2023-11-15T03:07:24Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:imageregistry.openshift.io': {}
+        'f:spec':
+          'f:accessModes': {}
+          'f:resources':
+            'f:requests':
+              .: {}
+              'f:storage': {}
+          'f:volumeMode': {}
+    - manager: kube-controller-manager
+      operation: Update
+      apiVersion: v1
+      time: '2023-11-15T03:07:24Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            'f:volume.beta.kubernetes.io/storage-provisioner': {}
+            'f:volume.kubernetes.io/storage-provisioner': {}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: thin
+  volumeMode: Filesystem
+status:
+  phase: Pending
+```
+
 
 The pvc should be bounded immediately, and the image push failure should be resolved.
 
