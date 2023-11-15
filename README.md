@@ -321,6 +321,71 @@ The patch command ensures that the packets leaving the pods use the same routing
 
 To check OpenShift network settings, run the command, `oc describe network.config/cluster`
 
+```
+Name:         cluster
+Namespace:    
+Labels:       <none>
+Annotations:  <none>
+API Version:  config.openshift.io/v1
+Kind:         Network
+Metadata:
+  Creation Timestamp:  2023-11-15T01:30:29Z
+  Generation:          2
+  Managed Fields:
+    API Version:  config.openshift.io/v1
+    Fields Type:  FieldsV1
+    fieldsV1:
+      f:spec:
+        f:clusterNetwork:
+        f:externalIP:
+          f:policy:
+        f:networkType:
+        f:serviceNetwork:
+      f:status:
+        f:clusterNetwork:
+        f:clusterNetworkMTU:
+        f:networkType:
+        f:serviceNetwork:
+    Manager:      cluster-network-operator/operconfig
+    Operation:    Apply
+    Time:         2023-11-15T01:34:48Z
+    API Version:  config.openshift.io/v1
+    Fields Type:  FieldsV1
+    fieldsV1:
+      f:spec:
+        .:
+        f:clusterNetwork:
+        f:externalIP:
+          .:
+          f:policy:
+        f:networkType:
+        f:serviceNetwork:
+      f:status:
+    Manager:         cluster-bootstrap
+    Operation:       Update
+    Time:            2023-11-15T01:30:29Z
+  Resource Version:  3254
+  UID:               09a9dee7-67b4-46d2-a974-5d645a3ef7b6
+Spec:
+  Cluster Network:
+    Cidr:         10.128.0.0/14
+    Host Prefix:  23
+  External IP:
+    Policy:
+  Network Type:  OpenShiftSDN
+  Service Network:
+    172.30.0.0/16
+Status:
+  Cluster Network:
+    Cidr:               10.128.0.0/14
+    Host Prefix:        23
+  Cluster Network MTU:  1450
+  Network Type:         OpenShiftSDN
+  Service Network:
+    172.30.0.0/16
+Events:  <none>
+```
+
 ### Check logs in MAS Manage pods
 
 During MAS Manage activation, you can check logs in the `<instance>-<workspace>-manage-maxinst` pod and `<instance>-<workspace>-all` pod.
