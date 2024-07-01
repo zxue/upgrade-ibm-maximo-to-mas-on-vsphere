@@ -113,6 +113,8 @@ export GRAFANA_INSTANCE_STORAGE_CLASS= thin-csi
 export MONGODB_STORAGE_CLASS= thin-csi
 export UDS_STORAGE_CLASS= thin-csi
 export PROMETHEUS_ALERTMGR_STORAGE_CLASS=thin-csi
+#https://ibm-mas.github.io/ansible-devops/roles/suite_app_config/
+export MAS_APP_SETTINGS_DEMODATA=true
 ```
 
 It's recommended that you go with automatic approval of channel subscription during MAS Manage activation, unless you need to stay with a specific version. This ensures that you get a latest version of MAS Manage. You can change the setting later from the MAS admin portal.
