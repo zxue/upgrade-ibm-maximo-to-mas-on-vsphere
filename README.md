@@ -495,7 +495,9 @@ After updating encryption keys from the MAS admin portal, you can re-activate MA
 
 ### Database connection keeps loading
 
-If the database connection keeps loading on the admin portal while deploying MAS Manage, it is likely that the database is not assessible. To stop the database connection, you can go to the jdbccfg custom resources from the OpenShift admin portal, and remove the two lines below in the yaml file for each jdbc connection.
+If the database connection keeps loading on the admin portal during MAS Manage activation, it is likely that the database is not assessible. To stop the database connection, you can go to the jdbccfg custom resources from the OpenShift admin portal, and remove the two lines below in the yaml file for each jdbc connection. It is unnecessary to delete the database.
+
+Once the database connection issues are resolved, you can re-establish the database connection for MAS Manage and complete the activation.
 
 ```
 finalizers:
