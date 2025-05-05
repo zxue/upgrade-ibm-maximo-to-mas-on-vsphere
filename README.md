@@ -493,7 +493,7 @@ mxe.security.old.cryptox.key=
 
 After updating encryption keys from the MAS admin portal, you can re-activate MAS Manage. Before re-activation, delete the secret named `<mas workspace e.g. masdev>-manage-encryptionsecret-operator` in the MAS Manage namespace. This ensures that the changes are reloaded during activation.
 
-### Database connection issue
+### Database connection keeps loading
 
 If the database connection keeps loading on the admin portal while deploying MAS Manage, it is likely that the database is not assessible. To stop the database connection, you can go to the jdbccfg custom resources from the OpenShift admin portal, and remove the two lines below in the yaml file for each jdbc connection.
 
