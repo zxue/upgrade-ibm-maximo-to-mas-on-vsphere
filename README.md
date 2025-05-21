@@ -549,8 +549,8 @@ If you get the OpenID error as shown below, one possiblity is that the certifica
 
 To address the issue, replace the certificate with a valid one, and re-create all routes for MAS Manage and other applications.
 
-An alternative is to use self-signed certificate. Complete the following steps.
-- set manualcertmgmt to false in Suite and ManageWorkspace CR 
+An alternative is to use self-signed certificate. Complete the following steps in OpenShift.
+- set manualcertmgmt to false in the instance of Suite and the instacne of ManageWorkspace CRD
 - edit the routes for Manage and replace certs using the same certs from MAS Core. An easy way is to copy the yaml file text block from MAS Core admin route and replace it in the yaml file for each MAS Manage route.
 
 ```
