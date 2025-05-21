@@ -538,6 +538,55 @@ Invalid tablespace for -s and/or -t parameters. - MAXDATA Thu Nov 09 21:09:19 GM
 BMXAA6819I - Maxinst completed with errors. Thu Nov 09 21:09:19 GMT 2023
 ```
 
+
+### OpenID Connect client "401" error
+
+If you get the OpenID error as shown below, one possiblity is that the certificate used for MAS is invalid or incorrect [Subject Alternative Names (SAN)](https://www.ibm.com/docs/en/masv-and-l/cd?topic=management-manual-certificate).
+
+```
+{"error_description":"OpenID Connect client returned with status: SEND_401","error":401}
+```
+
+To address the issue, replace the certificate with a valid one, and re-create all routes for MAS Manage and other applications.
+
+An alternative is to use self-signed certificate. Complete the following steps.
+- set manualcertmgmt to false in Suite and ManageWorkspace CR 
+- edit the routes for Manage and replace certs using the same certs from MAS Core. An easy way is to copy the yaml file text block from MAS Core admin route and replace it in the yaml file for each MAS Manage route.
+
+```
+  tls:
+    termination: reencrypt
+    certificate: |
+      -----BEGIN CERTIFICATE-----
+      MIIELDCCAxSgAwIBAgIQdoYH1R9og/I/J+vRQX8b3DANBgkqhkiG9w0BAQsFADCB
+      ...
+      s69Hcuq29zd0KykD4h2q+Q==
+      -----END CERTIFICATE-----
+    key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEpQIBAAKCAQEAvG5Kv0yMXF6UcIaB7W6uKAhlk+35hDrtf3MICYD206FKu32p
+
+      d3B9jyPpe19sjRxLtcCyajtiA0ehm1EmJ3HJJ3BU+OFgNznXIritZ74=
+      -----END RSA PRIVATE KEY-----
+    caCertificate: |-
+      -----BEGIN CERTIFICATE-----
+      MIID0jCCArqgAwIBAgIQKgUmDeKgSzi0Xvr0aiCj9zANBgkqhkiG9w0BAQsFADCB
+      ...
+      3nq3whG3W1a4C2bkQ6vo6IJkAMLuK3d31Qc+lGsPO7BuelyXHCQ2mNGt1HkL26DA
+      2DcDCPv3dze+r68CPxseZ9l8OSYJdA==
+      -----END CERTIFICATE-----
+    destinationCACertificate: |
+      -----BEGIN CERTIFICATE-----
+      MIID2jCCAsKgAwIBAgIQYYHOefobIE5UKncEY/xRCzANBgkqhkiG9w0BAQsFADCB
+      ...
+      UF5/Tz42m3W4LyPcHMAqOkHMxhJQJ+N0HRXbgkM9
+      -----END CERTIFICATE-----
+  wildcardPolicy: None
+```
+
+Manage appears working now, without re-installing.
+
+
 ### MAS admin log in failure
 
 If some industry solutions and add-ons are enabled in Maximo, they must be activated or enabled when MAS Manage is activated, or afterwards. Otherwise, MAS admin login fails with the following message.
